@@ -1,20 +1,40 @@
 
-spisok = input("Введите последовательность чисел через пробел: ")
-spisok_list = [int(a) for a in spisok.split()]
-
-num = int(input("Введите любое число: "))
-if num % 1 == 0:
-    spisok_list.append(num)
-    print("Список до сортировки: ", spisok_list)
-
-def my_sort(spisok_list):
-    for i in range(len(spisok_list)):  # проходим по всему массиву
-        idx_min = i  # сохраняем индекс предположительно минимального элемента
-        for j in range(i, len(spisok_list)):
-            if spisok_list[j] < spisok_list[idx_min]:
-                idx_min = j
-        if i != idx_min:  # если индекс не совпадает с минимальным, меняем
-            spisok_list[i], spisok_list[idx_min] = spisok_list[idx_min], spisok_list[i]
-    return spisok_list
-
-print("Список после сортировки:", my_sort(spisok_list))
+import random
+while True:
+    nums = input('Введите только числа через пробел:\n')
+    check = nums.replace(' ', '')
+    if check.isdigit():
+        print('Условие выполнено!')
+        break
+array = list(map(int, nums.split()))
+print(f'Преобразованная в список последовательность чисел: {array}')
+def quicksort(seq):
+    if len(seq) <= 1:
+        return seq
+    else:
+        q = random.choice(seq)
+    l_nums = [n for n in seq if n < q]
+    e_nums = [q] * seq.count(q)
+    b_nums = [n for n in seq if n > q]
+    return quicksort(l_nums) + e_nums + quicksort(b_nums)
+print(f'Отсортированный список:\t{quicksort(array)}')
+array = quicksort(array)
+def binary_search(array, element):
+    left = -1
+    right = len(array)
+    while right > left + 1:
+        middle = (left + right) // 2
+        if array[middle] >= element:
+            right = middle
+        else:
+            left = middle
+    return right
+element = int(input('Введите цифру для поиска:\n'))
+if element == min(array):
+    print(f'Индекс элемента: {min(array) - 1}')
+elif element > max(array):
+    print('Число больше максимального и не входит в диапазон массива')
+elif element < min(array):
+    print('Число меньше минимального и не входит в диапазон массива')
+else:
+    print(f'Индекс элемента меньше введённого: {binary_search(array, element)-1}')
